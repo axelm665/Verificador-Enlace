@@ -28,7 +28,7 @@
 
             // Ajuste de la hora para la zona horaria Argentina (UTC -3)
             const argentinaOffset = 3 * 60 * 60;  // 3 horas de diferencia (en segundos)
-            const currentTimeAdjusted = currentTime + (argentinaOffset); // Ajustar el tiempo actual
+            const currentTimeAdjusted = currentTime - argentinaOffset; // Ajustar el tiempo actual
 
             // Log de depuración para ver las fechas
             console.log("🔍 Timestamp de expiración:", expira);
