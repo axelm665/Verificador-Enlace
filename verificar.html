@@ -16,14 +16,14 @@
         }
 
         // Obtener el parámetro 'expira' de la URL (timestamp en segundos)
-        const expira = parseInt(getUrlParameter("expira"), 10);
+        const expira = parseInt(getUrlParameter("expira"), 10);  // Convertir a entero
 
-        // Verificar si el timestamp de expiración está presente
+        // Verificar si el timestamp de expiración está presente y es un número
         if (isNaN(expira)) {
-            document.getElementById('message').innerHTML = `<h2>⚠️ Error: No se encontró el parámetro 'expira' en la URL.</h2>`;
-            console.log("Error: El parámetro 'expira' no es válido o está ausente.");
+            document.getElementById('message').innerHTML = `<h2>⚠️ Error: No se encontró el parámetro 'expira' o es inválido.</h2>`;
+            console.log("Error: El parámetro 'expira' no es válido.");
         } else {
-            // Obtener la hora actual en segundos (tiempo UNIX actual)
+            // Obtener la hora actual en UTC-3 (zona horaria de Argentina) y convertirla a UNIX timestamp
             const currentTime = Math.floor(new Date().getTime() / 1000);  // Tiempo actual en segundos
 
             console.log("🔍 Timestamp de expiración:", expira);
@@ -31,12 +31,14 @@
             
             // Verificar si el enlace ha expirado
             if (currentTime <= expira) {
+                // Enlace válido
                 document.getElementById('message').innerHTML = `
                     <h2>✅ Tu viaje ha sido confirmado!</h2>
                     <p>En breve te llegará un correo con los datos de tu conductor asignado. 🚗</p>
                 `;
                 console.log("Enlace válido.");
             } else {
+                // Enlace expirado
                 document.getElementById('message').innerHTML = `
                     <h2>❌ El enlace ya no es válido.</h2>
                     <p>Solicita un nuevo viaje:</p>
