@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Enlace</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .mensaje {
+            font-size: 20px;
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+        .boton {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+        .boton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Obtener los parámetros de la URL
+            const params = new URLSearchParams(window.location.search);
+            const expira = parseInt(params.get("expira"), 10);
+            const ahora = Math.floor(Date.now() / 1000); // Obtener el tiempo actual en Unix Timestamp
+
+            if (!expira || ahora > expira) {
+                // Si no hay fecha de expiración o ya pasó el tiempo, mostrar mensaje de error con botón
+                document.body.innerHTML = `
+                    <h1>Enlace no válido</h1>
+                    <p class="mensaje">Este enlace ha expirado y ya no puede usarse.</p>
+                    <p>Solicita un nuevo viaje haciendo clic en el siguiente botón:</p>
+                    <a href="https://form.jotform.com/250136938523054" class="boton">Solicitar un Nuevo Viaje</a>
+                `;
+            } else {
+                // Si el enlace aún es válido, redirigir al webhook
+                const webhookURL = "https://hook.us2.make.com/0rxqdbb2r8v1lntgql5ov16a38jr2kiw";
+                window.location.href = `${webhookURL}?${params.toString()}`;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h2>Verificando enlace...</h2>
+</body>
+</html>
