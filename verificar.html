@@ -9,39 +9,44 @@
     <div id="message"></div>
 
     <script>
-        // Función para obtener los parámetros de la URL
+        // Obtener parámetros de la URL usando URLSearchParams
         function getUrlParameter(name) {
-            let url = window.location.href;
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-            let results = regex.exec(url);
-            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
         }
 
-        // Obtener el parámetro 'expira' de la URL
-        const expira = getUrlParameter("expira");
+        // Obtener el parámetro 'expira' de la URL y convertirlo a número
+        const expira = parseInt(getUrlParameter("expira"), 10);
 
-        // Obtener la hora actual
-        const now = new Date();
-        const currentTime = Math.floor(now.getTime() / 1000); // Tiempo actual en segundos desde 1970
+        // Obtener la hora actual en segundos desde 1970 (timestamp UNIX)
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        // Seleccionar el div donde se mostrará el mensaje
+        const messageDiv = document.getElementById('message');
 
         // Verificar si el enlace ha expirado
-        if (expira) {
+        if (!isNaN(expira)) {
             if (currentTime <= expira) {
-                // El enlace es válido, mostrar mensaje de confirmación
-                document.getElementById('message').innerHTML = 
-                    "<h2>Tu viaje ha sido confirmado!</h2>" +
-                    "<p>En breve te llegará un correo con los datos de tu conductor asignado! Gracias por elegirnos.</p>";
+                // Enlace válido
+                messageDiv.innerHTML = `
+                    <h2>Tu viaje ha sido confirmado!</h2>
+                    <p>En breve te llegará un correo con los datos de tu conductor asignado! Gracias por elegirnos.</p>
+                `;
             } else {
-                // El enlace ha expirado, mostrar mensaje de error
-                document.getElementById('message').innerHTML = 
-                    "<h2>El enlace ya no es válido.</h2>" +
-                    "<p>Solicita un nuevo viaje: <a href='https://form.jotform.com/250136938523054' target='_blank'><button>Solicitar nuevo viaje</button></a></p>";
+                // Enlace expirado
+                messageDiv.innerHTML = `
+                    <h2>El enlace ya no es válido.</h2>
+                    <p>Solicita un nuevo viaje:</p>
+                    <a href="https://form.jotform.com/250136938523054" target="_blank">
+                        <button>Solicitar nuevo viaje</button>
+                    </a>
+                `;
             }
         } else {
-            // Si no se encuentra el parámetro 'expira', mostrar mensaje de error
-            document.getElementById('message').innerHTML = 
-                "<h2>Error: El enlace no contiene un parámetro de expiración válido.</h2>";
+            // Si 'expira' no es un número válido
+            messageDiv.innerHTML = `
+                <h2>Error: El enlace no contiene un parámetro de expiración válido.</h2>
+            `;
         }
     </script>
 </body>
