@@ -9,33 +9,28 @@
     <div id="message"></div>
 
     <script>
-        // Obtener parámetros de la URL usando URLSearchParams
         function getUrlParameter(name) {
             const params = new URLSearchParams(window.location.search);
             return params.get(name);
         }
 
-        // Obtener el parámetro 'expira' de la URL y convertirlo a número
-        const expira = parseInt(getUrlParameter("expira"), 10);
+        const expira = parseInt(getUrlParameter("expira"), 10); // Convertir a número entero
+        const currentTime = Math.floor(Date.now() / 1000); // Obtener tiempo actual en segundos
 
-        // Obtener la hora actual en segundos desde 1970 (timestamp UNIX)
-        const currentTime = Math.floor(Date.now() / 1000);
+        console.log("Timestamp de expiración:", expira);
+        console.log("Tiempo actual:", currentTime);
 
-        // Seleccionar el div donde se mostrará el mensaje
         const messageDiv = document.getElementById('message');
 
-        // Verificar si el enlace ha expirado
         if (!isNaN(expira)) {
             if (currentTime <= expira) {
-                // Enlace válido
                 messageDiv.innerHTML = `
-                    <h2>Tu viaje ha sido confirmado!</h2>
-                    <p>En breve te llegará un correo con los datos de tu conductor asignado! Gracias por elegirnos.</p>
+                    <h2>✅ Tu viaje ha sido confirmado!</h2>
+                    <p>En breve te llegará un correo con los datos de tu conductor asignado. 🚗</p>
                 `;
             } else {
-                // Enlace expirado
                 messageDiv.innerHTML = `
-                    <h2>El enlace ya no es válido.</h2>
+                    <h2>❌ El enlace ya no es válido.</h2>
                     <p>Solicita un nuevo viaje:</p>
                     <a href="https://form.jotform.com/250136938523054" target="_blank">
                         <button>Solicitar nuevo viaje</button>
@@ -43,9 +38,8 @@
                 `;
             }
         } else {
-            // Si 'expira' no es un número válido
             messageDiv.innerHTML = `
-                <h2>Error: El enlace no contiene un parámetro de expiración válido.</h2>
+                <h2>⚠️ Error: El enlace no contiene un timestamp válido.</h2>
             `;
         }
     </script>
