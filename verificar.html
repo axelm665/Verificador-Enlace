@@ -23,14 +23,22 @@
             document.getElementById('message').innerHTML = `<h2>⚠️ Error: No se encontró el parámetro 'expira' o es inválido.</h2>`;
             console.log("Error: El parámetro 'expira' no es válido.");
         } else {
-            // Obtener la hora actual en UTC-3 (zona horaria de Argentina) y convertirla a UNIX timestamp
+            // Obtener la hora actual en milisegundos (getTime()) y convertir a segundos
             const currentTime = Math.floor(new Date().getTime() / 1000);  // Tiempo actual en segundos
 
+            // Ajuste de la hora para la zona horaria Argentina (UTC -3)
+            const argentinaOffset = 3 * 60 * 60;  // 3 horas de diferencia (en segundos)
+            const currentTimeAdjusted = currentTime + (argentinaOffset); // Ajustar el tiempo actual
+
+            // Log de depuración para ver las fechas
             console.log("🔍 Timestamp de expiración:", expira);
-            console.log("⏳ Tiempo actual (UNIX):", currentTime);
-            
+            console.log("⏳ Tiempo actual (UNIX en segundos):", currentTime);
+            console.log("⏳ Tiempo actual ajustado para Argentina (UNIX):", currentTimeAdjusted);
+            console.log("⏳ Tiempo actual en formato legible:", new Date(currentTime * 1000).toLocaleString());
+            console.log("📅 Fecha de expiración en formato legible:", new Date(expira * 1000).toLocaleString());
+
             // Verificar si el enlace ha expirado
-            if (currentTime <= expira) {
+            if (currentTimeAdjusted <= expira) {
                 // Enlace válido
                 document.getElementById('message').innerHTML = `
                     <h2>✅ Tu viaje ha sido confirmado!</h2>
