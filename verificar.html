@@ -9,19 +9,24 @@
     <div id="message"></div>
 
     <script>
+        // Función para obtener los parámetros de la URL
         function getUrlParameter(name) {
             const params = new URLSearchParams(window.location.search);
             return params.get(name);
         }
 
+        // Obtener el parámetro 'expira' de la URL
         const expira = parseInt(getUrlParameter("expira"), 10); // Convertir a número entero
-        const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
+
+        // Obtener la hora actual en UTC-3 (zona horaria de Argentina)
+        const currentTime = Math.floor(new Date().getTime() / 1000); // Tiempo actual en segundos
+
+        // Verificación y mensaje de validación
+        const messageDiv = document.getElementById('message');
 
         console.log("🔍 Timestamp de expiración:", expira);
-        console.log("⏳ Tiempo actual:", currentTime);
+        console.log("⏳ Tiempo actual (UNIX):", currentTime);
         console.log("Comparación:", currentTime <= expira ? "✅ Válido" : "❌ Expirado");
-
-        const messageDiv = document.getElementById('message');
 
         if (!isNaN(expira)) {
             if (currentTime <= expira) {
