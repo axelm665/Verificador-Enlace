@@ -15,10 +15,11 @@
         }
 
         const expira = parseInt(getUrlParameter("expira"), 10); // Convertir a número entero
-        const currentTime = Math.floor(Date.now() / 1000); // Obtener tiempo actual en segundos
+        const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
 
-        console.log("Timestamp de expiración:", expira);
-        console.log("Tiempo actual:", currentTime);
+        console.log("🔍 Timestamp de expiración:", expira);
+        console.log("⏳ Tiempo actual:", currentTime);
+        console.log("Comparación:", currentTime <= expira ? "✅ Válido" : "❌ Expirado");
 
         const messageDiv = document.getElementById('message');
 
